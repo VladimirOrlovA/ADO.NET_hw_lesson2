@@ -92,7 +92,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbAccess.BLL\DbAccess.BLL.csproj">
+      <Project>{149a39b2-3160-49e4-8b2b-788d3d39d6ef}</Project>
+      <Name>DbAccess.BLL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

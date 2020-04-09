@@ -5,8 +5,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ADO.NET_hw_lesson2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="Utillites for DataBase" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="Подключение к БД">
+            <StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="5">
+                    <Label Content="Выбор имеющейся строки подключения"/>
+                    <ComboBox x:Name="cbSelectConnStr" Width="200"
+                             SelectionChanged="CbSelectConnStr_SelectionChanged"
+                             />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="5">
+                    <Label Content="Cтрока подключения"/>
+                    <TextBox x:Name="tbConnectionString" 
+                             Width="580"
+                             TextChanged="TbConnectionString_TextChanged"/>
+                </StackPanel>
+                <Button x:Name="btnSaveChangesConnStr" 
+                        Content="Сохранить изменения"
+                        IsEnabled="False"
+                        Click="BtnSaveChangesConnStr_Click"/>
+
+                <Button x:Name="btnTestConnection"
+                        Click="BtnTestConnection_Click"
+                        Content="Тест подключения"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="Работа с данными">
+            <StackPanel>
+
+                <Label Content="Введите запрос в БД"/>
+
+                <TextBox x:Name="tbDbQuery"
+                         Text="SELECT * FROM Model"
+                         Width="auto"
+                         TextWrapping="Wrap"/>
+
+                <Button x:Name="btnSendQuery"
+                        Click="btnSendQuery_Click"  
+                        Content="Отправить запрос"
+                        Margin="5"/>
+
+                <Button Content="Редактировать данные в БД"
+                        Margin="5"/>
+
+                <StackPanel>
+                    <Grid Background="Lavender">
+                        <DataGrid x:Name="dgTableView" AutoGenerateColumns="True" ItemsSource="{DynamicResource ResourceKey=phones}">
+                            <DataGrid.Resources>
+                                <col:ArrayList x:Key="phones">
+                                    <local:Phone Title="iPhone 6S" Company="Apple" Price="54990" />
+                                    <local:Phone Title="Lumia 950" Company="Microsoft" Price="39990" />
+                                    <local:Phone Title="Nexus 5X" Company="Google" Price="29990" />
+                                </col:ArrayList>
+                            </DataGrid.Resources>
+                        </DataGrid>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
