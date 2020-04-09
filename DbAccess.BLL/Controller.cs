@@ -53,21 +53,22 @@ namespace DbAccess.BLL
             config.Save();
         }
 
-        public static void TestDbconnection(string connStr, out string message)
+        public static Boolean TestDbconnection(string connStr, out string message)
         {
             message = "";
-            DataContext.CheckConnection(connStr, out string msg);
+            Boolean test = false;
+
+            test = DataContext.CheckConnection(connStr, out string msg);
+            
             message = msg;
+            return test;
         }
 
         public static DataViewManager MakeRequest(string connStr, string queryExpression, out string message)
         {
             message = "";
 
-            if (queryExpression.Contains("SELECT"))
-                Read(connStr, queryExpression, out message);
-
-            else if (queryExpression.Contains("create"))
+            if (queryExpression.Contains("create"))
                 Create(connStr, queryExpression, out message);
 
             else if (queryExpression.Contains("insert"))
@@ -81,6 +82,7 @@ namespace DbAccess.BLL
 
             else message = "данный запрос в не поддерживается";
 
+            return Read(connStr, queryExpression, out message);
         }
 
         static void Create(string connStr, string queryExpression, out string message)

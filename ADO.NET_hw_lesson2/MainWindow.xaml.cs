@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using DbAccess.BLL;
+using System.Data;
 
 namespace ADO.NET_hw_lesson2
 {
@@ -24,7 +25,7 @@ namespace ADO.NET_hw_lesson2
     {
         // для события изменения текста в поле tbConnectionString
         private static int countEvent = 0;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,7 +49,8 @@ namespace ADO.NET_hw_lesson2
             }
             else
             {
-                Controller.TestDbconnection(connStr, out message);
+                if(Controller.TestDbconnection(connStr, out message))
+                    btnSendQuery.IsEnabled = true;
             }
 
             MessageBox.Show(message);
@@ -79,12 +81,27 @@ namespace ADO.NET_hw_lesson2
             string message = "";
             string queryExpression = tbDbQuery.Text;
 
-            Controller.MakeRequest(tbConnectionString.Text, queryExpression, out message);
-        }
+            var dataView =  Controller.MakeRequest(tbConnectionString.Text, queryExpression, out message);
 
-        private void ViewTable()
-        {
-            
+            //dgTableView.ItemsSource = dataView.DataSet.Tables;
+            try
+            {
+                dgTableView.ItemsSource = dataView.DataSet.Tables[0].Columns;
+            }
+            catch (Exception excDataView)
+            {
+                string tmpMsg = excDataView.ToString();
+                string[] msg = tmpMsg.Split(new char[] { '\n' });
+                message += msg[0];
+            }
+
+            //Dictionary<string, string> phonesList = new Dictionary<string, string>
+            //    {
+            //            { "iPhone 6S", "iPhone 6S"},
+            //    };
+            //dgTableView.ItemsSource = phonesList;
+
+            MessageBox.Show(message);
         }
     }
 }

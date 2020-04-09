@@ -40,7 +40,7 @@ namespace DbAccess.DAL
                     return conn;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 message = e.ToString();
                 string[] msg = message.Split(new char[] { '\n' });
@@ -48,15 +48,15 @@ namespace DbAccess.DAL
 
                 return conn;
             }
-            
-            
+
+
         }
 
-        public static void CheckConnection(string connStr, out string message)
+        public static Boolean CheckConnection(string connStr, out string message)
         {
             DbConnection conn = GetConnection(connStr, out message);
 
-            if (conn == null) return;
+            if (conn == null) return false;
 
             using (conn)
             {
@@ -79,12 +79,14 @@ namespace DbAccess.DAL
                     builder.Append(new string('=', 40));
 
                     message = builder.ToString();
+                    return true;
                 }
                 catch (Exception e)
                 {
                     message = e.ToString();
                     string[] msg = message.Split(new char[] { '\n' });
                     message = msg[0];
+                    return false;
                 }
             }
         }
@@ -100,7 +102,7 @@ namespace DbAccess.DAL
             {
                 conn.Open();
                 //message = ((SqlConnection)conn).ClientConnectionId.ToString();
-                if(conn is OleDbConnection)
+                if (conn is OleDbConnection)
                 {
                     var command = conn.CreateCommand();
                     command.CommandText = queryExpression;
@@ -158,7 +160,7 @@ namespace DbAccess.DAL
                                 Console.WriteLine();
                             }
                         }
-                            //message = $"Изменено {reader.RecordsAffected} записей в БД {conn.Database}";
+                        //message = $"Изменено {reader.RecordsAffected} записей в БД {conn.Database}";
 
                     }
                     catch (Exception e)
@@ -175,14 +177,42 @@ namespace DbAccess.DAL
         public static DataViewManager DbExecuteReader(string connStr, string queryExpression, out string message)
         {
             message = "";
-
             DbConnection conn = GetConnection(connStr, out message);
-            SqlCommand sqlCommand = new SqlCommand(queryExpression);
-            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
-            
             DataSet dataSet = new DataSet();
-            adapter.Fill(dataSet);  // сам открывает и сам закрывает соединение
-            DataViewManager dataView = dataSet.DefaultViewManager;
+
+            try
+            {
+                if (conn is OleDbConnection)
+                {
+                    OleDbCommand command = new OleDbCommand(queryExpression);
+                    command.Connection = (OleDbConnection)conn;
+                    OleDbDataAdapter adapter = new OleDbDataAdapter(command);
+                    adapter.Fill(dataSet);
+                }
+
+                if (conn is SqlConnection)
+                {
+                    SqlCommand command = new SqlCommand(queryExpression);
+                    command.Connection = (SqlConnection)conn;
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dataSet);
+
+                    foreach (DataRow row in dataSet.Tables[0].Rows)
+                    {
+                        Console.WriteLine($"\t{row}");
+                        //DisplayRow(row);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                string tmpMsg = e.ToString();
+                string[] msg = tmpMsg.Split(new char[] { '\n' });
+                message += msg[0];
+            }
+    
+
+            DataViewManager dataView = new DataViewManager(dataSet);
 
             return dataView;
         }

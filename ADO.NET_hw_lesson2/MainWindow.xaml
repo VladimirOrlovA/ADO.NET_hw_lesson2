@@ -54,21 +54,16 @@
                 <Button x:Name="btnSendQuery"
                         Click="btnSendQuery_Click"  
                         Content="Отправить запрос"
+                        IsEnabled="False"
                         Margin="5"/>
 
                 <Button Content="Редактировать данные в БД"
+                        IsEnabled="False"
                         Margin="5"/>
 
                 <StackPanel>
                     <Grid Background="Lavender">
-                        <DataGrid x:Name="dgTableView" AutoGenerateColumns="True" ItemsSource="{DynamicResource ResourceKey=phones}">
-                            <DataGrid.Resources>
-                                <col:ArrayList x:Key="phones">
-                                    <local:Phone Title="iPhone 6S" Company="Apple" Price="54990" />
-                                    <local:Phone Title="Lumia 950" Company="Microsoft" Price="39990" />
-                                    <local:Phone Title="Nexus 5X" Company="Google" Price="29990" />
-                                </col:ArrayList>
-                            </DataGrid.Resources>
+                        <DataGrid x:Name="dgTableView" AutoGenerateColumns="True" >
                         </DataGrid>
                     </Grid>
                 </StackPanel>
