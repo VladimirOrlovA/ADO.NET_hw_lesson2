@@ -59,7 +59,7 @@ namespace DbAccess.BLL
             Boolean test = false;
 
             test = DataContext.CheckConnection(connStr, out string msg);
-            
+
             message = msg;
             return test;
         }
@@ -68,21 +68,25 @@ namespace DbAccess.BLL
         {
             message = "";
 
-            if (queryExpression.Contains("create"))
+            if (queryExpression.Contains("CREATE"))
                 Create(connStr, queryExpression, out message);
 
-            else if (queryExpression.Contains("insert"))
+            else if (queryExpression.Contains("INSERT"))
                 Update(connStr, queryExpression, out message);
 
-            else if (queryExpression.Contains("update"))
+            else if (queryExpression.Contains("UPDATE"))
                 Update(connStr, queryExpression, out message);
 
-            else if (queryExpression.Contains("delete"))
+            else if (queryExpression.Contains("DELETE"))
                 Delete(connStr, queryExpression, out message);
 
             else message = "данный запрос в не поддерживается";
 
-            return Read(connStr, queryExpression, out message);
+            //string[] queryWords = queryExpression.Split(new char[] { ' ' });
+            //foreach (var tableName in queryWords)
+            //    if (tableName.Contains("Table"))
+            //            queryExpression = $"SELECT * FROM table + {tableName}";
+            return Read(connStr, " ", out message);
         }
 
         static void Create(string connStr, string queryExpression, out string message)
