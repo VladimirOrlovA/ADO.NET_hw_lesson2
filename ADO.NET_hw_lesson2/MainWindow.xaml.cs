@@ -83,16 +83,15 @@ namespace ADO.NET_hw_lesson2
 
             var dataView =  Controller.MakeRequest(tbConnectionString.Text, queryExpression, out message);
 
-            //dgTableView.ItemsSource = dataView.DataSet.Tables;
             try
             {
-                dgTableView.ItemsSource = dataView.DataSet.Tables[0].Columns;
+                dgTableView.ItemsSource = dataView.DataSet.Tables[0].DefaultView;
             }
             catch (Exception excDataView)
             {
                 string tmpMsg = excDataView.ToString();
                 string[] msg = tmpMsg.Split(new char[] { '\n' });
-                message += msg[0];
+                message += "Отображать нечего " + msg[0];
             }
 
             //Dictionary<string, string> phonesList = new Dictionary<string, string>

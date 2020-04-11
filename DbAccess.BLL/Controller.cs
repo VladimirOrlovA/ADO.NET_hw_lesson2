@@ -86,7 +86,7 @@ namespace DbAccess.BLL
             //foreach (var tableName in queryWords)
             //    if (tableName.Contains("Table"))
             //            queryExpression = $"SELECT * FROM table + {tableName}";
-            return Read(connStr, " ", out message);
+            return Read(connStr, "SELECT * FROM TablesModel", out message);
         }
 
         static void Create(string connStr, string queryExpression, out string message)
@@ -113,8 +113,6 @@ namespace DbAccess.BLL
             message = "";
             DataContext.DbExecuteNonQuery(connStr, queryExpression, out message);
         }
-
-
 
     }
 }

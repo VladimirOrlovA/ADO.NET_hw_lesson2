@@ -47,7 +47,7 @@
                 <Label Content="Введите запрос в БД"/>
 
                 <TextBox x:Name="tbDbQuery"
-                         Text="SELECT * FROM Model"
+                         Text="SELECT * FROM TablesModel"
                          Width="auto"
                          TextWrapping="Wrap"/>
 

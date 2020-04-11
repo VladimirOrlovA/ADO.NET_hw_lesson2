@@ -196,12 +196,6 @@ namespace DbAccess.DAL
                     command.Connection = (SqlConnection)conn;
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     adapter.Fill(dataSet);
-
-                    foreach (DataRow row in dataSet.Tables[0].Rows)
-                    {
-                        Console.WriteLine($"\t{row}");
-                        //DisplayRow(row);
-                    }
                 }
             }
             catch (Exception e)
